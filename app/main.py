@@ -27,33 +27,40 @@ def root():
 
 @app.get("/celsius-to-fahrenheit")
 def celsius_to_fahrenheit(value: float):
-    logger.info(f"Converting Celsius to Fahrenheit: value={value}")
+    try:
+        logger.info(f"Converting Celsius to Fahrenheit: value={value}")
 
-    fahrenheit = (value * 9 / 5) + 32
+        fahrenheit = (value * 9 / 5) + 32
 
-    logger.info(
-        f"Conversion result: {value}C -> {fahrenheit}F"
-    )
+        logger.info(
+            f"Conversion result: {value}C -> {fahrenheit}F"
+        )
 
-    return {
-        "celsius": value,
-        "fahrenheit": fahrenheit
-    }
+        return {
+            "celsius": value,
+            "fahrenheit": fahrenheit
+        }
+    except Exception as e:
+        logger.error("Conversion failed", exc_info=True)
+        raise
 
 @app.get("/fahrenheit-to-celsius")
 def fahrenheit_to_celsius(value: float):
-    logger.info(f"Converting Fahrenheit to Celsius: value={value}")
+    try:
+        logger.info(f"Converting Fahrenheit to Celsius: value={value}")
 
-    celsius = (value - 32) * 5 / 9
+        celsius = (value - 32) * 5 / 9
 
-    logger.info(
-        f"Conversion result: {value}F -> {celsius}C"
-    )
+        logger.info(
+            f"Conversion result: {value}F -> {celsius}C"
+        )
 
-    return {
-        "fahrenheit": value,
-        "celsius": celsius
-    }
+        return {
+            "fahrenheit": value,
+            "celsius": celsius
+        }
+    except Exception as e:
+        logger.error("Conversion failed", exc_info=True)
 
 #-----------
 # Middleware
