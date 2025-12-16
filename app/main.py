@@ -1,3 +1,6 @@
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
 import logging
 from fastapi import FastAPI, Request
 
@@ -15,6 +18,8 @@ logger = logging.getLogger("temperature-api")
 # App Initialization
 #-------------------
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 
 #-------
 # Routes
@@ -22,8 +27,8 @@ app = FastAPI()
 
 @app.get("/")
 def root():
-    logger.info("Root endpoint accessed")
-    return {"message": "Temperature Conversion API"}
+    logger.info("Serving frontend")
+    return FileResponse("static/index.html")
 
 @app.get("/celsius-to-fahrenheit")
 def celsius_to_fahrenheit(value: float):

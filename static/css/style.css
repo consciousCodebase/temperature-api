@@ -1,0 +1,18 @@
+/* Base Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+}
+
+/* Form Elements */
+input,
+button {
+    padding: 8px;
+    margin: 5px, 0;
+}
+
+/* Result Display */
+.result {
+    margin-top: 10px;
+    font-weight: bold;
+}
