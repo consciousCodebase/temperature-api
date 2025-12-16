@@ -1,8 +1,22 @@
+#---------------------------
+# Project:
+# Temperature Conversion API
+# using Python APIs
+#
+# Joy Williams Morales
+# Date: 14 December 2025
+#
+# Filename: main.py
+#----------------------------
+
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
 import logging
 from fastapi import FastAPI, Request
+
+from fastapi import HTTPException, Query
+import math
 
 #-----------------------
 # Logging Configuration
@@ -31,10 +45,17 @@ def root():
     return FileResponse("static/index.html")
 
 @app.get("/celsius-to-fahrenheit")
-def celsius_to_fahrenheit(value: float):
+def celsius_to_fahrenheit(value: float = Query(..., description="Temperature in Celsius")):
     try:
         logger.info(f"Converting Celsius to Fahrenheit: value={value}")
 
+        if not math.isfinite(value):
+            logger.warning("Invalid Celsius value received")
+            raise HTTPException(
+                status_code=400,
+                detail="Value must be a finite number"
+            )
+        
         fahrenheit = (value * 9 / 5) + 32
 
         logger.info(
@@ -45,14 +66,25 @@ def celsius_to_fahrenheit(value: float):
             "celsius": value,
             "fahrenheit": fahrenheit
         }
+    
+    except HTTPException:
+        raise
+
     except Exception as e:
         logger.error("Conversion failed", exc_info=True)
         raise
 
 @app.get("/fahrenheit-to-celsius")
-def fahrenheit_to_celsius(value: float):
+def fahrenheit_to_celsius(value: float = Query(..., description="Temperature in Fahrenheit")):
     try:
         logger.info(f"Converting Fahrenheit to Celsius: value={value}")
+
+        if not math.isfinite(value):
+            logger.warning("Invalid Fahrenheit value received")
+            raise HTTPException(
+                status_code=400,
+                detail="Value must be a finite number"
+            )
 
         celsius = (value - 32) * 5 / 9
 
@@ -64,6 +96,9 @@ def fahrenheit_to_celsius(value: float):
             "fahrenheit": value,
             "celsius": celsius
         }
+    except HTTPException:
+        raise
+
     except Exception as e:
         logger.error("Conversion failed", exc_info=True)
 

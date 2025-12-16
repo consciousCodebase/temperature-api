@@ -1,3 +1,16 @@
+/*
+--------------------------
+Project:
+Temperature Conversion API
+using Python APIs
+
+Joy Williams Morales
+Date: 14 December 2025
+
+Filename: style.css
+-----------------------------
+*/
+
 /* Base Page Styling */
 body {
     font-family: Arial, sans-serif;
@@ -15,4 +28,8 @@ button {
 .result {
     margin-top: 10px;
     font-weight: bold;
+}
+
+.result:empty {
+    display: none
 }
