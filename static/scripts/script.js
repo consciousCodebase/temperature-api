@@ -14,15 +14,19 @@ Filename: scripts.js
 async function convertCtoF() {
     const value = document.getElementById("celsiusInput").value;
     const resultDiv = document.getElementById("celsiusResult");
+    const loading = document.getElementById("celsiusLoading");
+    const button = document.getElementById("celsiusBtn");
 
     resultDiv.innerText = "";
-
-    if (value === "") {
-        resultDiv.innerText = "Please enter a Celsius value.";
-        return;
-    }
+    loading.hidden = false;
+    button.disabled = true;
 
     try {
+        if (value === "") {
+        resultDiv.innerText = "Please enter a Celsius value.";
+        return;
+        }  
+        
         const response = await fetch(`/celsius-to-fahrenheit?value=${value}`);
         const data = await response.json();
 
@@ -35,21 +39,28 @@ async function convertCtoF() {
 
     } catch (error) {
         resultDiv.innerText = "Unexpected error occurred.";
+    } finally {
+        loading.hidden = true;
+        button.disabled = false;
     }
 }
 
 async function convertFtoC() {
     const value = document.getElementById("fahrenheitInput").value;
     const resultDiv = document.getElementById("fahrenheitResult");
+    const loading = document.getElementById("fahrenheitLoading");
+    const button = document.getElementById("fahrenheitBtn");
 
     resultDiv.innerText = "";
+    loading.hidden = false;
+    button.disabled = true;
 
-    if (value === "") {
+    try {
+        if (value === "") {
         resultDiv.innerText = "Please enter a Fahrenheit value";
         return;
     }
 
-    try {
         const response = await fetch(`/fahrenheit-to-celsius?value=${value}`);
         const data = await response.json();
 
@@ -61,5 +72,8 @@ async function convertFtoC() {
         resultDiv.innerText = `${data.fahrenheit}°F = ${data.celsius}°C`;
     } catch (error) {
         resultDiv.innerText = "Unexpected Error Occurred";
+    } finally {
+        loading.hidden = true;
+        button.disabled = false;
     }
 }

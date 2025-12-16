@@ -33,3 +33,15 @@ button {
 .result:empty {
     display: none
 }
+
+/* Loading Styles */
+.loading {
+    margin-top: 10px;
+    font-style: italic;
+    color: #666;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
