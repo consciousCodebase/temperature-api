@@ -35,10 +35,20 @@ button {
 }
 
 /* Loading Styles */
-.loading {
+.spinner {
     margin-top: 10px;
-    font-style: italic;
-    color: #666;
+    width: 28px;
+    height: 28px;
+    border: 4px solid #ddd;
+    border-top: 4px solid #333;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform:rotate(360deg);
+    }
 }
 
 button:disabled {
