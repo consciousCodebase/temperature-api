@@ -27,8 +27,15 @@ async function convertCtoF() {
         return;
         }  
         
-        const response = await fetch(`/celsius-to-fahrenheit?value=${value}`);
-        const data = await response.json();
+        const response = await fetch("/celsius-to-fahrenheit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ value: Number(value)})
+    });
+
+    const data = await response.json();
 
         if (!response.ok) {
             resultDiv.innerText = `Error: ${data.detail}`;
@@ -38,6 +45,7 @@ async function convertCtoF() {
         resultDiv.innerText = `${data.celsius}°C = ${data.fahrenheit}°F`;
 
     } catch (error) {
+        console.error(error)
         resultDiv.innerText = "Unexpected error occurred.";
     } finally {
         loading.hidden = true;
@@ -61,8 +69,15 @@ async function convertFtoC() {
         return;
     }
 
-        const response = await fetch(`/fahrenheit-to-celsius?value=${value}`);
-        const data = await response.json();
+        const response = await fetch("/fahrenheit-to-celsius", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ value: Number(value)})
+        });
+
+        const data = await response.json()
 
         if (!response.ok) {
             resultDiv.innerText = `Error: ${data.detail}`;
@@ -71,6 +86,7 @@ async function convertFtoC() {
 
         resultDiv.innerText = `${data.fahrenheit}°F = ${data.celsius}°C`;
     } catch (error) {
+        console.error(error)
         resultDiv.innerText = "Unexpected Error Occurred";
     } finally {
         loading.hidden = true;

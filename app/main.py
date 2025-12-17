@@ -18,6 +18,12 @@ from fastapi import FastAPI, Request
 from fastapi import HTTPException, Query
 import math
 
+from app.models import (
+    TemperatureRequest,
+    CelsiusToFahrenheitResponse,
+    FahrenheitToCelsiusResponse,
+)
+
 #-----------------------
 # Logging Configuration
 #-----------------------
@@ -44,9 +50,12 @@ def root():
     logger.info("Serving frontend")
     return FileResponse("static/index.html")
 
-@app.get("/celsius-to-fahrenheit")
-def celsius_to_fahrenheit(value: float = Query(..., description="Temperature in Celsius")):
+@app.post("/celsius-to-fahrenheit",
+         response_model=CelsiusToFahrenheitResponse)
+
+def celsius_to_fahrenheit(payload: TemperatureRequest):
     try:
+        value = payload.value
         logger.info(f"Converting Celsius to Fahrenheit: value={value}")
 
         if not math.isfinite(value):
@@ -62,10 +71,10 @@ def celsius_to_fahrenheit(value: float = Query(..., description="Temperature in 
             f"Conversion result: {value}C -> {fahrenheit}F"
         )
 
-        return {
-            "celsius": value,
-            "fahrenheit": fahrenheit
-        }
+        return CelsiusToFahrenheitResponse(
+            celsius=value,
+            fahrenheit=fahrenheit
+        )
     
     except HTTPException:
         raise
@@ -74,9 +83,12 @@ def celsius_to_fahrenheit(value: float = Query(..., description="Temperature in 
         logger.error("Conversion failed", exc_info=True)
         raise
 
-@app.get("/fahrenheit-to-celsius")
-def fahrenheit_to_celsius(value: float = Query(..., description="Temperature in Fahrenheit")):
+@app.post("/fahrenheit-to-celsius",
+         response_model=FahrenheitToCelsiusResponse)
+
+def fahrenheit_to_celsius(payload: TemperatureRequest):
     try:
+        value = payload.value
         logger.info(f"Converting Fahrenheit to Celsius: value={value}")
 
         if not math.isfinite(value):
@@ -92,10 +104,11 @@ def fahrenheit_to_celsius(value: float = Query(..., description="Temperature in 
             f"Conversion result: {value}F -> {celsius}C"
         )
 
-        return {
-            "fahrenheit": value,
-            "celsius": celsius
-        }
+        return FahrenheitToCelsiusResponse(
+            fahrenheit=value,
+            celsius=celsius
+        )
+    
     except HTTPException:
         raise
 
