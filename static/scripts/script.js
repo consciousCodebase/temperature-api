@@ -93,3 +93,11 @@ async function convertFtoC() {
         button.disabled = false;
     }
 }
+
+/* Making this script testable */
+if (typeof module !== "undefined") {
+    module.exports = {
+        convertCtoF,
+        convertFtoC
+    };
+}
